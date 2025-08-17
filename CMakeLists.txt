@@ -58,9 +58,17 @@ set(SOURCES
     ${SOURCE_PATH}/transupp.c
     ${SOURCE_PATH}/jdatadst-tj.c
     ${SOURCE_PATH}/jdatasrc-tj.c
+    ${SOURCE_PATH}/rdbmp.c
+    ${SOURCE_PATH}/wrbmp.c
+    ${SOURCE_PATH}/wrppm.c
+    ${SOURCE_PATH}/rdppm.c
 )
 
 set(ASM_INCLUDE_FLAGS "-i${SOURCE_PATH}/simd/nasm -i${SOURCE_PATH}/simd/x86_64/")
+
+if(NOT CMAKE_ANDROID_ARCH_ABI)
+set(CMAKE_ANDROID_ARCH_ABI "none")
+endif()
 
 if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
     enable_language(C ASM_NASM)
@@ -224,5 +232,7 @@ target_compile_options(libjpeg-turbo PRIVATE
     -DNEED_SYS_TYPES_H=1
     -DSTDC_HEADERS=1
     -DWITH_SIMD=1
+    -DPPM_SUPPORTED=1
+    -DBMP_SUPPORTED=1
     ${ARCH_FLAGS}
 )
